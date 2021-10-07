@@ -1,0 +1,39 @@
+CREATE TABLE `hostel` (
+  `hid` int NOT NULL,
+  `hname` varchar(50) DEFAULT NULL,
+  `haddress` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`hid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `rooms` (
+  `hid` int NOT NULL,
+  `rid` int NOT NULL,
+  `capacity` int DEFAULT NULL,
+  `occupants` int DEFAULT NULL,
+  PRIMARY KEY (`hid`,`rid`),
+  CONSTRAINT `rooms_ibfk_1` FOREIGN KEY (`hid`) REFERENCES `hostel` (`hid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `student` (
+  `rollno` varchar(50) NOT NULL,
+  `fname` varchar(50) DEFAULT NULL,
+  `lname` varchar(50) DEFAULT NULL,
+  `contactno` bigint DEFAULT NULL,
+  `branch` varchar(50) DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  PRIMARY KEY (`rollno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `roomstudent` (
+  `hid` int DEFAULT NULL,
+  `rid` int DEFAULT NULL,
+  `rollno` varchar(50) DEFAULT NULL,
+  KEY `hid` (`hid`,`rid`),
+  KEY `rollno` (`rollno`),
+  CONSTRAINT `roomstudent_ibfk_1` FOREIGN KEY (`hid`, `rid`) REFERENCES `rooms` (`hid`, `rid`),
+  CONSTRAINT `roomstudent_ibfk_2` FOREIGN KEY (`rollno`) REFERENCES `student` (`rollno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `fees` (
+  `rollno` varchar(50) DEFAULT NULL,
+  `amount` int DEFAULT NULL,
+  `datepaid` date DEFAULT NULL,
+  KEY `rollno` (`rollno`),
+  CONSTRAINT `fees_ibfk_1` FOREIGN KEY (`rollno`) REFERENCES `student` (`rollno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
